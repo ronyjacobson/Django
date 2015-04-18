@@ -12,6 +12,15 @@ class Question(models.Model):
     	return self.question_text
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+    
+# list_display propetries:
+
+    # Will order by date when trying to sort by recently published
+    was_published_recently.admin_order_field = 'pub_date'
+    # Will show a true/false icon
+    was_published_recently.boolean = True
+     # Will change the title of the field
+    was_published_recently.short_description = 'Published recently?'
 
 
 class Choice(models.Model):
