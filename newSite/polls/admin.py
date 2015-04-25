@@ -8,13 +8,14 @@ class QuestionAdmin(admin.ModelAdmin):
     fields = ['pub_date', 'question_text']
 
 admin.site.register(Question)
+"""
 
 
 class ChiceAdmin(admin.ModelAdmin):
     fields = ['question', 'choice_text', 'votes']
 
 admin.site.register(Choice)
-"""
+
 class ChoiceInline(admin.TabularInline):
     model = Choice
     extra = 3
