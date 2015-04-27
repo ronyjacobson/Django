@@ -39,6 +39,30 @@ class User(models.Model):
             birthday = self.birthday.isoformat(),
             created = self.created.isoformat())
 
+class City(models.Model):
+    name = models.CharField(max_length=50, db_index=True)
+
+    def __unicode__(self):
+        return self.name
+
+    def as_json(self):
+        return dict(
+            city = self.name)
+
+class Street(models.Model):
+    city = models.ForeignKey(City)
+    name = models.CharField(max_length=50, db_index=True)
+
+    def __unicode__(self):
+        return self.name
+
+    def as_json(self):
+        cityName = City.objects.get(self.city)
+        return dict(
+            street = self.name,
+            city = cityName)
+
+
 class SP(models.Model):
     # CATEGORIES:
     MEDICAL = 'medical'
@@ -61,8 +85,9 @@ class SP(models.Model):
     # FIELDS:
     name = models.CharField(max_length=100, db_index=True)
     desc = models.CharField(max_length=225, blank = True)
-    address = models.CharField(max_length=225, db_index=True)
-    city = models.CharField(max_length=225, db_index=True)
+    street_num = models.IntegerField(db_index=True)
+    street = models.ForeignKey(Street)
+    city = models.ForeignKey(City)
     longitude = models.DecimalField(max_digits=7, decimal_places=7, db_index=True, blank=True, null=True)
     latitude = models.DecimalField(max_digits=7, decimal_places=7, db_index=True, blank=True, null=True)
     phone = models.CharField(max_length=13, db_index=True, blank = True)
@@ -76,19 +101,25 @@ class SP(models.Model):
 
 
     # ACCECABILITY
-
+    def address(self):
+        city = City.objects.get(self.city).name
+        street = Street.objects.get(self.street).name
 
     def __unicode__(self):
         return self.name + ', ' + self.address
 
     #Json Parsers
     def as_json(self, withReviews):
+        cityName = City.objects.get(self.city).name
+        streetName = Street.objects.get(self.street).name
+
         response= dict(
             id = self.pk,
             name = self.name,
             desc = self.desc,
-            address = self.address,
-            city = self.city,
+            city = cityName,
+            street = streetName,
+            streetNum = self.street_num,
             longitude = self.longitude,
             latitude = self.latitude,
             phone = self.phone,
