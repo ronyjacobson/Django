@@ -23,6 +23,6 @@ class AddSPForm(ModelForm):
 
 
 class AddReviewForm(ModelForm):
-        class Meta:
-         model = SP
-         fields = ['title', 'content', 'sp']
+    class Meta:
+         model = Review
+         fields = ['title', 'content', 'user']
