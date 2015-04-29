@@ -31,7 +31,7 @@ urlpatterns = [
     # ex: /ToGetThere/android/user/1/
     url(r'^android/user/(?P<user_id>[0-9]+)/$', views.userProfile, name='user_profile'),
 
-    # ex: /ToGetThere/android/myprofile/
+    # ex: /ToGetThere/android/myprofile/1/
     url(r'^android/myprofile/(?P<user_id>[0-9]+)/$', views.userProfile, name='my_profile'),
 
     # ex: /ToGetThere/android/editprofile/1/

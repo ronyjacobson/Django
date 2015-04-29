@@ -9,8 +9,20 @@ class UserForm(ModelForm):
 
 
 
-class SPForm(ModelForm):
-   class Meta:
+class AddSPForm(ModelForm):
+    class Meta:
          model = SP
-         fields = ['name', 'desc', 'address', 'city' , 'longitude',
-                   'latitude', 'phone', 'discount', 'category', 'website']
+         fields = ['name', 'desc', 'category', 'city', 'street', 'street_num', 'longitude',
+                   'latitude', 'phone', 'discount', 'website']
+
+#class RankSPForm(ModelForm):
+
+
+
+#class EditSPForm(ModelForm):
+
+
+class AddReviewForm(ModelForm):
+        class Meta:
+         model = SP
+         fields = ['title', 'content', 'sp']

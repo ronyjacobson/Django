@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'ToGetThere.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'togetthere_django',
+        'NAME': 'togetthere',
         'USER': 'root',
         'PASSWORD': 'Rony3029',
         'HOST': '127.0.0.1',

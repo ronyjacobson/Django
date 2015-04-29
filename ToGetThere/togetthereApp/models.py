@@ -6,9 +6,6 @@ import datetime
 # Run python manage.py migrate to apply those changes to the database.
 
 
-# Create your models here.
-
-
 
 class User(models.Model):
     facebook_id = models.CharField(unique=True, max_length=30, blank = True)
@@ -39,6 +36,8 @@ class User(models.Model):
             birthday = self.birthday.isoformat(),
             created = self.created.isoformat())
 
+
+
 class City(models.Model):
     name = models.CharField(max_length=50, db_index=True)
 
@@ -47,7 +46,10 @@ class City(models.Model):
 
     def as_json(self):
         return dict(
+            id = self.pk,
             city = self.name)
+
+
 
 class Street(models.Model):
     city = models.ForeignKey(City)
@@ -59,8 +61,11 @@ class Street(models.Model):
     def as_json(self):
         cityName = City.objects.get(self.city)
         return dict(
+            id = self.pk,
             street = self.name,
             city = cityName)
+
+
 
 
 class SP(models.Model):
@@ -82,7 +87,7 @@ class SP(models.Model):
     )
 
 
-    # FIELDS:
+    # Fields:
     name = models.CharField(max_length=100, db_index=True)
     desc = models.CharField(max_length=225, blank = True)
     street_num = models.IntegerField(db_index=True)
@@ -100,9 +105,17 @@ class SP(models.Model):
     voters = models.IntegerField(default=0, blank=True)
 
 
-    # ACCECABILITY
+
+    # Accessibility Fields
+
+    # Functions
+    class Meta:
+        unique_together = (("name", "street", "street_num"),)
+
+
+
     def address(self):
-        city = City.objects.get(self.city).name
+        city = unicode(City.objects.get(self.city).name)
         street = Street.objects.get(self.street).name
 
     def __unicode__(self):
@@ -110,8 +123,8 @@ class SP(models.Model):
 
     #Json Parsers
     def as_json(self, withReviews):
-        cityName = City.objects.get(self.city).name
-        streetName = Street.objects.get(self.street).name
+        cityName = self.city.name
+        streetName = self.street.name
 
         response= dict(
             id = self.pk,
@@ -137,6 +150,7 @@ class SP(models.Model):
             response['reviews'] = reviewsList
 
         return response
+
 
 
 

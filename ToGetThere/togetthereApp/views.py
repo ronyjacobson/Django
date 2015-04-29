@@ -3,6 +3,7 @@ from .forms import *
 from django.shortcuts import get_object_or_404,get_list_or_404, render
 import json
 from django.core.urlresolvers import reverse
+from django.core.serializers.json import DjangoJSONEncoder
 
 
 def index(request):
@@ -15,22 +16,22 @@ def spByCategoryList(request, category_id):
 
 def spView(request, sp_id):
     sp = get_object_or_404(SP,pk=sp_id)
-    return HttpResponse(json.dumps(sp.as_json(True)))
+#    return JsonResponse(sp.as_json(True),encoder=DjangoJSONEncoder)
+    return HttpResponse(json.dumps(sp.as_json(True), ensure_ascii=False))
 
-#TODO- update if exist, correct error case
+
 def addSp(request):
-    if request.method == 'GET':
+    DEBUGG = False;
+    if (request.method == 'GET') & (DEBUGG):
         form = SPForm()
-    else:
+        return render(request, 'ToGetThere/addSP.html', {'form': form,})
+    elif request.method == 'POST':
         form = SPForm(request.POST)
         if form.is_valid():
             sp = form.save()
-            return HttpResponseRedirect(reverse('ToGetThere:sp_by_category', kwargs={'category_id': sp.category}))
+            return HttpResponseRedirect(reverse('ToGetThere:spView', args=(sp.pk,)))
         else:
-            #TODO informative
-            raise Http404('Not Valid!')
-    #TODO - validate redirect
-    return render(request, 'ToGetThere/addSP.html', {'form': form,})
+            raise Http404(form.errors)
 
 #TODO
 def rankSp(request, sp_id):
@@ -47,7 +48,7 @@ def rankSp(request, sp_id):
 def spReviews(request, sp_id):
     reviews = get_list_or_404(Review, sp=sp_id)
     results = [rev.as_json() for rev in reviews]
-    return HttpResponse(json.dumps(results))
+    return HttpResponse(json.dumps(results), ensure_ascii=False)
 
 #TODO
 def spAddReview(request, sp_id):
@@ -74,7 +75,7 @@ def editSP(request, sp_id):
 
 def userProfile(request, user_id):
     user = get_object_or_404(User,pk=user_id)
-    return HttpResponse(json.dumps(user.as_json()))
+    return HttpResponse(json.dumps(user.as_json()), ensure_ascii=False)
 
 #TODO
 def editProfile(request, user_id):
