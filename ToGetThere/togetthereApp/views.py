@@ -17,22 +17,54 @@ def spByCategoryList(request, category_id):
 
 def spView(request, sp_id):
     sp = get_object_or_404(SP,pk=sp_id)
-#    return JsonResponse(sp.as_json(True),encoder=DjangoJSONEncoder)
+ #  return JsonResponse(sp.as_json(True),encoder=DjangoJSONEncoder)
     return HttpResponse(json.dumps(sp.as_json(True), ensure_ascii=False))
 
 
 def addSp(request):
-    DEBUGG = False;
+    DEBUGG = True;
     if (request.method == 'GET') & (DEBUGG):
-        form = AddSPForm()
-        return render(request, 'ToGetThere/addSP.html', {'form': form,})
+        sp_form = AddSPForm()
+        address_form = AddAddressForm()
+        street_form = AddStreetForm()
+        city_form = AddCityForm()
+        return render(request, 'ToGetThere/addSP.html', {'address_form': address_form,
+            'sp_form':sp_form, 
+            'street_form':street_form, 
+            'city_form':city_form})
     elif request.method == 'POST':
-        form = AddSPForm(request.POST)
-        if form.is_valid():
-            sp = form.save()
-            return HttpResponseRedirect(reverse('ToGetThere:spView', args=(sp.pk,)))
+        sp_form = AddSPForm(request.POST)
+        address_form = AddAddressForm(request.POST)
+        street_form = AddStreetForm(request.POST)
+        city_form = AddCityForm(request.POST)
+
+        if (sp_form.is_valid() and address_form.is_valid() and street_form.is_valid() and city_form.is_valid()):
+            fname = sp_form.cleaned_data['name']
+            fdesc = sp_form.cleaned_data['desc']
+            fcategory = sp_form.cleaned_data['category']
+            flongitude = sp_form.cleaned_data['longitude']
+            flatitude = sp_form.cleaned_data['latitude']
+            fphone = sp_form.cleaned_data['phone']
+            fdiscount = sp_form.cleaned_data['discount']
+            fwebsite = sp_form.cleaned_data['website']
+            fcity_name = city_form.cleaned_data['city_name']
+            fstreet_name = street_form.cleaned_data['street_name']
+            fstreet_num = address_form.cleaned_data['street_num']
+
+            formCity= City.objects.get_or_create(city_name = fcity_name)
+            formStreet = Street.objects.get_or_create(street_name  = fstreet_name, city = formCity)
+            formAddress = Address.objects.get_or_create(street_num= fstreet_num, street=formStreet, city = formCity)
+            formsp = Address.objects.get_or_create(name= fname, desc= fdesc, sp_address=formAddress , longitude=flongitude, latitude=flatitude, phone=fphone,
+                discount= fdiscount, category=fcategory, website=fwebsite)
+            return HttpResponseRedirect(reverse('ToGetThere:spView', args=(formsp.pk,)))
         else:
-            raise Http404(form.errors)
+
+            raise Http404(str(sp_form.errors) + '\n' +
+                str(address_form.errors) + '\n' +
+                str(city_form.errors) + '\n' +
+                str(street_form.errors))
+                
+                
 
 #TODO
 def rankSp(request, sp_id):

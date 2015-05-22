@@ -13,7 +13,7 @@ urlpatterns = [
     # ex: /ToGetThere/android/sp/1
     url(r'^android/sp/(?P<sp_id>[0-9]+)/$', views.spView, name='spView'),
 
-    # ex: /ToGetThere/android/add/
+    # ex: /ToGetThere/android/sp/add/
     url(r'^android/sp/add/$', views.addSp, name='add_sp'),
 
     # ex: /ToGetThere/android/sp/1/rank/

@@ -11,10 +11,17 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Address',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('street_num', models.IntegerField()),
+            ],
+        ),
+        migrations.CreateModel(
             name='City',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=50, db_index=True)),
+                ('city_name', models.CharField(max_length=50, db_index=True)),
             ],
         ),
         migrations.CreateModel(
@@ -33,7 +40,6 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=100, db_index=True)),
                 ('desc', models.CharField(max_length=225, blank=True)),
-                ('street_num', models.IntegerField(db_index=True)),
                 ('longitude', models.DecimalField(db_index=True, null=True, max_digits=7, decimal_places=7, blank=True)),
                 ('latitude', models.DecimalField(db_index=True, null=True, max_digits=7, decimal_places=7, blank=True)),
                 ('phone', models.CharField(db_index=True, max_length=13, blank=True)),
@@ -44,14 +50,13 @@ class Migration(migrations.Migration):
                 ('website', models.URLField(blank=True)),
                 ('rank', models.BigIntegerField(default=0, blank=True)),
                 ('voters', models.IntegerField(default=0, blank=True)),
-                ('city', models.ForeignKey(to='togetthereApp.City')),
             ],
         ),
         migrations.CreateModel(
             name='Street',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=50, db_index=True)),
+                ('street_name', models.CharField(max_length=50, db_index=True)),
                 ('city', models.ForeignKey(to='togetthereApp.City')),
             ],
         ),
@@ -59,18 +64,13 @@ class Migration(migrations.Migration):
             name='User',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('facebook_id', models.CharField(unique=True, max_length=30, blank=True)),
+                ('facebook_id', models.CharField(max_length=30, blank=True)),
                 ('first_name', models.CharField(max_length=35, db_index=True)),
                 ('last_name', models.CharField(db_index=True, max_length=35, blank=True)),
-                ('email', models.EmailField(db_index=True, unique=True, max_length=254, blank=True)),
+                ('email', models.EmailField(db_index=True, max_length=254, blank=True)),
                 ('birthday', models.DateField(blank=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
             ],
-        ),
-        migrations.AddField(
-            model_name='sp',
-            name='street',
-            field=models.ForeignKey(to='togetthereApp.Street'),
         ),
         migrations.AddField(
             model_name='review',
@@ -82,8 +82,19 @@ class Migration(migrations.Migration):
             name='user',
             field=models.ForeignKey(to='togetthereApp.User'),
         ),
-        migrations.AlterUniqueTogether(
-            name='sp',
-            unique_together=set([('name', 'street', 'street_num')]),
+        migrations.AddField(
+            model_name='address',
+            name='city',
+            field=models.ForeignKey(to='togetthereApp.City'),
+        ),
+        migrations.AddField(
+            model_name='address',
+            name='street',
+            field=models.ForeignKey(to='togetthereApp.Street'),
+        ),
+        migrations.AddField(
+            model_name='SP',
+            name='address',
+            field=models.ForeignKey(to='togetthereApp.Address'),
         ),
     ]

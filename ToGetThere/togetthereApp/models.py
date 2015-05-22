@@ -8,10 +8,10 @@ import datetime
 
 
 class User(models.Model):
-    facebook_id = models.CharField(unique=True, max_length=30, blank = True)
+    facebook_id = models.CharField(max_length=30, blank = True)
     first_name = models.CharField(max_length=35, db_index=True)
     last_name = models.CharField(max_length=35, db_index=True, blank = True)
-    email = models.EmailField(unique=True, db_index=True, blank = True)
+    email = models.EmailField(db_index=True, blank = True)
     birthday = models.DateField(blank = True)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -39,7 +39,7 @@ class User(models.Model):
 
 
 class City(models.Model):
-    name = models.CharField(max_length=50, db_index=True)
+    city_name = models.CharField(max_length=50, db_index=True, unique=True)
 
     def __unicode__(self):
         return self.name
@@ -47,13 +47,16 @@ class City(models.Model):
     def as_json(self):
         return dict(
             id = self.pk,
-            city = self.name)
+            city_name = self.city_name)
 
 
 
 class Street(models.Model):
     city = models.ForeignKey(City)
-    name = models.CharField(max_length=50, db_index=True)
+    street_name = models.CharField(max_length=50, db_index=True)
+
+    class Meta:
+        unique_together = (("city", "street_name"),)
 
     def __unicode__(self):
         return self.name
@@ -62,11 +65,25 @@ class Street(models.Model):
         cityName = City.objects.get(self.city)
         return dict(
             id = self.pk,
-            street = self.name,
+            street_name = self.street_name,
             city = cityName)
 
 
+class Address(models.Model):
+    street_num = models.IntegerField()
+    street = models.ForeignKey(Street)
+    city = models.ForeignKey(City)
 
+    def __unicode__(self):
+        return self.street.street_name + str(self.street_num) + self.city.city_name
+
+    def as_json(self):
+        return dict(
+            id = self.pk,
+            street = self.street.street_name,
+            streetNum = self.street_num,
+            city = self.city.city_name)
+        
 
 class SP(models.Model):
     # CATEGORIES:
@@ -88,11 +105,9 @@ class SP(models.Model):
 
 
     # Fields:
+    sp_address = models.ForeignKey(Address)
     name = models.CharField(max_length=100, db_index=True)
     desc = models.CharField(max_length=225, blank = True)
-    street_num = models.IntegerField(db_index=True)
-    street = models.ForeignKey(Street)
-    city = models.ForeignKey(City)
     longitude = models.DecimalField(max_digits=7, decimal_places=7, db_index=True, blank=True, null=True)
     latitude = models.DecimalField(max_digits=7, decimal_places=7, db_index=True, blank=True, null=True)
     phone = models.CharField(max_length=13, db_index=True, blank = True)
@@ -105,34 +120,24 @@ class SP(models.Model):
     voters = models.IntegerField(default=0, blank=True)
 
 
-
     # Accessibility Fields
 
     # Functions
-    class Meta:
-        unique_together = (("name", "street", "street_num"),)
-
-
-
     def address(self):
-        city = unicode(City.objects.get(self.city).name)
-        street = Street.objects.get(self.street).name
+        return unicode(self.sp_address)
 
     def __unicode__(self):
-        return self.name + ', ' + self.address
+        return self.name + ', ' + self.address()
 
     #Json Parsers
     def as_json(self, withReviews):
-        cityName = self.city.name
-        streetName = self.street.name
+        addressText = unicode(self.address())
 
         response= dict(
             id = self.pk,
             name = self.name,
             desc = self.desc,
-            city = cityName,
-            street = streetName,
-            streetNum = self.street_num,
+            address = addressText,
             longitude = self.longitude,
             latitude = self.latitude,
             phone = self.phone,
@@ -150,10 +155,6 @@ class SP(models.Model):
             response['reviews'] = reviewsList
 
         return response
-
-
-
-
 
 class Review(models.Model):
     title = models.CharField(max_length=225)

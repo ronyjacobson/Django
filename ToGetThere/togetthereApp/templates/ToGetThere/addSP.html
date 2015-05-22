@@ -1,7 +1,10 @@
 <form method='post'>
     {% csrf_token %}
 <table>
-    {{ form }}
+    {{ sp_form }}
+    {{ city_form }}
+    {{address_form}}
+    {{ street_form }}
 </table>
 
 <input type='submit' value='Submit' />

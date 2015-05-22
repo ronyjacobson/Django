@@ -23,30 +23,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "newSite/newSite/urls.py",
-			"settings":
-			{
-				"buffer_size": 318,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "newSite/polls/urls.py",
-			"settings":
-			{
-				"buffer_size": 736,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Program Files/adt-bundle-windows-x86_64-20140702/eclipse/eclipse.ini",
-			"settings":
-			{
-				"buffer_size": 478,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "Packages/Python/Python.sublime-build",
 	"build_system_choices":
@@ -106,10 +82,14 @@
 	"expanded_folders":
 	[
 		"/C/Users/Rony/Documents/GitHub/Django/newSite",
-		"/C/Users/Rony/Documents/GitHub/Django/newSite/polls"
+		"/C/Users/Rony/Documents/GitHub/Django/newSite/polls",
+		"/C/Users/Rony/Documents/GitHub/Django/ToGetThere"
 	],
 	"file_history":
 	[
+		"/C/Users/Rony/Documents/GitHub/Django/newSite/polls/urls.py",
+		"/C/Users/Rony/Documents/GitHub/Django/newSite/newSite/urls.py",
+		"/C/Program Files/adt-bundle-windows-x86_64-20140702/eclipse/eclipse.ini",
 		"/C/Users/Rony/Desktop/rechov_150331.xml",
 		"/C/Users/Rony/AppData/Local/Temp/Temp1_adt-bundle-windows-x86_64-20140702.zip/adt-bundle-windows-x86_64-20140702/eclipse/eclipse.ini",
 		"/C/Users/Rony/Documents/GitHub/ProgrammingLanguages/pl15_ex2/expr.py",
@@ -127,12 +107,10 @@
 		"/C/Users/Rony/Documents/GitHub/testgit/GameOfLife.py",
 		"/C/Users/Rony/Documents/GitHub/Django/newSite/polls/views.py",
 		"/C/Users/Rony/Documents/GitHub/Django/newSite/polls/static/polls/style.css",
-		"/C/Users/Rony/Documents/GitHub/Django/newSite/polls/urls.py",
 		"/C/Users/Rony/Documents/GitHub/Django/newSite/polls/templates/polls/results.html",
 		"/C/Users/Rony/Documents/GitHub/Django/newSite/polls/templates/polls/index.html",
 		"/C/Users/Rony/Documents/GitHub/Django/newSite/polls/templates/polls/detail.html",
 		"/C/Users/Rony/Documents/GitHub/Django/newSite/polls/templates/polls/static/polls/style.css",
-		"/C/Users/Rony/Documents/GitHub/Django/newSite/newSite/urls.py",
 		"/C/Users/Rony/Documents/GitHub/Django/newSite/newSite/settings.py",
 		"/C/Users/Rony/Documents/GitHub/Django/newSite/templates/admin/base_site.html",
 		"/C/Users/Rony/Documents/GitHub/Django/newSite/polls/models.py"
@@ -181,98 +159,6 @@
 	"groups":
 	[
 		{
-			"selected": 2,
-			"sheets":
-			[
-				{
-					"buffer": 0,
-					"file": "newSite/newSite/urls.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 318,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								283,
-								293
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "newSite/polls/urls.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 736,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								736,
-								736
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 54.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "/C/Program Files/adt-bundle-windows-x86_64-20140702/eclipse/eclipse.ini",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 478,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								351,
-								351
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
-			]
-		},
-		{
 			"sheets":
 			[
 			]
@@ -295,18 +181,11 @@
 				0,
 				1,
 				1
-			],
-			[
-				1,
-				0,
-				2,
-				1
 			]
 		],
 		"cols":
 		[
 			0.0,
-			0.651853852232,
 			1.0
 		],
 		"rows":
@@ -366,7 +245,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 219.0,
+	"side_bar_width": 296.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

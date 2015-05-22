@@ -12,11 +12,27 @@ class UserForm(ModelForm):
 class AddSPForm(ModelForm):
     class Meta:
          model = SP
-         fields = ['name', 'desc', 'category', 'city', 'street', 'street_num', 'longitude',
+         fields = ['name', 'desc', 'category', 'longitude',
                    'latitude', 'phone', 'discount', 'website']
 
 #class RankSPForm(ModelForm):
 
+class AddAddressForm(ModelForm):
+    class Meta:
+         model = Address
+         fields = ['street_num']
+
+class AddStreetForm(ModelForm):
+    class Meta:
+         model = Street
+         fields = ['street_name']
+
+
+
+class AddCityForm(ModelForm):
+    class Meta:
+         model = City
+         fields = ['city_name']
 
 
 #class EditSPForm(ModelForm):
