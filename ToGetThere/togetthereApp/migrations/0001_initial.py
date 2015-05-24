@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
             name='City',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('city_name', models.CharField(max_length=50, db_index=True)),
+                ('city_name', models.CharField(unique=True, max_length=50, db_index=True)),
             ],
         ),
         migrations.CreateModel(
@@ -50,6 +50,7 @@ class Migration(migrations.Migration):
                 ('website', models.URLField(blank=True)),
                 ('rank', models.BigIntegerField(default=0, blank=True)),
                 ('voters', models.IntegerField(default=0, blank=True)),
+                ('sp_address', models.ForeignKey(to='togetthereApp.Address')),
             ],
         ),
         migrations.CreateModel(
@@ -92,9 +93,8 @@ class Migration(migrations.Migration):
             name='street',
             field=models.ForeignKey(to='togetthereApp.Street'),
         ),
-        migrations.AddField(
-            model_name='SP',
-            name='address',
-            field=models.ForeignKey(to='togetthereApp.Address'),
+        migrations.AlterUniqueTogether(
+            name='street',
+            unique_together=set([('city', 'street_name')]),
         ),
     ]

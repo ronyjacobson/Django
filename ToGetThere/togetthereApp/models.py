@@ -42,7 +42,7 @@ class City(models.Model):
     city_name = models.CharField(max_length=50, db_index=True, unique=True)
 
     def __unicode__(self):
-        return self.name
+        return self.city_name
 
     def as_json(self):
         return dict(
@@ -59,14 +59,14 @@ class Street(models.Model):
         unique_together = (("city", "street_name"),)
 
     def __unicode__(self):
-        return self.name
+        return self.street_name
 
     def as_json(self):
-        cityName = City.objects.get(self.city)
+        
         return dict(
             id = self.pk,
             street_name = self.street_name,
-            city = cityName)
+            city = self.city.city_name)
 
 
 class Address(models.Model):
@@ -75,7 +75,7 @@ class Address(models.Model):
     city = models.ForeignKey(City)
 
     def __unicode__(self):
-        return self.street.street_name + str(self.street_num) + self.city.city_name
+        return self.street.street_name + ' ' + str(self.street_num) + ', ' + self.city.city_name
 
     def as_json(self):
         return dict(
@@ -118,9 +118,20 @@ class SP(models.Model):
     website = models.URLField(blank = True)
     rank =  models.BigIntegerField(default=0, blank=True)
     voters = models.IntegerField(default=0, blank=True)
-
-
     # Accessibility Fields
+    toilets = models.BooleanField(default=False)
+    elevator = models.BooleanField(default=False)
+    entrance = models.BooleanField(default=False)
+    facilities = models.BooleanField(default=False)
+    parking = models.BooleanField(default=False)
+    """
+    TODO: Add Accecability fileds:
+    entrance : ramp, wideCoridors, wideEntrance
+    facilities: allowServicePets, counters, fittingRooms: handbars, chair/bench
+    Toilets: handicapToilets, handbars, accecible sink
+    """
+
+    # Add Photos Support
 
     # Functions
     def address(self):
@@ -144,7 +155,13 @@ class SP(models.Model):
             is_verified =self.is_verified,
             discount = self.discount,
             category =self.category,
-            website = self.website)
+            website = self.website,
+            toilets= self.toilets,
+            elevator = self.elevator,
+            entrance = self.entrance,
+            facilities = self.facilities,
+            parking =self.parking,
+            )
 
         if (withReviews):
             reviews = self.review_set.all()
